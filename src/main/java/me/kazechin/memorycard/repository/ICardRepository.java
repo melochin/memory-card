@@ -2,12 +2,17 @@ package me.kazechin.memorycard.repository;
 
 import me.kazechin.memorycard.model.Card;
 import me.kazechin.memorycard.model.MemoryCardInfo;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+@Mapper
 public interface ICardRepository {
 
-	List<Card> list(String brochureId);
+	@Select("select * from card where brochure_id = #{brochureId}")
+	List<Card> list(@Param("brochureId") String brochureId);
 
 	List<Card> listByWord(String word);
 

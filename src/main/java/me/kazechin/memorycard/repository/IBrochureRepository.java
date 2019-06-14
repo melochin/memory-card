@@ -1,9 +1,12 @@
 package me.kazechin.memorycard.repository;
 
 import me.kazechin.memorycard.model.Brochure;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface IBrochureRepository {
 
 	Brochure find(String brochureId);
@@ -15,6 +18,5 @@ public interface IBrochureRepository {
 	Brochure modify(Brochure brochure);
 
 	Brochure delete(String brochureId);
-
 
 }

@@ -1,20 +1,28 @@
 package me.kazechin.memorycard.repository;
 
-import me.kazechin.memorycard.MemoryCardApplication;
+import me.kazechin.memorycard.model.Card;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = MemoryCardApplication.class)
-class ICardRepositoryTest {
+
+public class ICardRepositoryTest extends RepositoryTest {
 
     @Autowired
     ICardRepository cardRepository;
 
+    @Rollback
     @Test
-    void list() {
-        cardRepository.list("1");
+    void test() {
+        List<Card> cards = cardRepository.listAll();
+        assertTrue(cards.size() > 0);
+        Card card = cards.get(0);
+
+        cardRepository.memoryRemember(card.getId());
+        cardRepository.memoryForget(card.getId());
     }
 }

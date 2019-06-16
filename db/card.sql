@@ -23,14 +23,24 @@ DROP TABLE IF EXISTS `brochure`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `brochure` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `description` varchar(45) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `brochure`
+--
+
+LOCK TABLES `brochure` WRITE;
+/*!40000 ALTER TABLE `brochure` DISABLE KEYS */;
+INSERT INTO `brochure` VALUES (1,'1','1',1,'2015-12-08 10:44:00');
+/*!40000 ALTER TABLE `brochure` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `card`
@@ -40,18 +50,28 @@ DROP TABLE IF EXISTS `card`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `card` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `brochure_id` int(11) DEFAULT NULL,
-  `key` varchar(500) DEFAULT NULL,
-  `value` varchar(1000) DEFAULT NULL,
-  `rembers` int(11) DEFAULT NULL,
-  `forgets` int(11) DEFAULT NULL,
+  `front` varchar(500) DEFAULT NULL,
+  `back` varchar(1000) DEFAULT NULL,
+  `remembers` int(11) DEFAULT '0',
+  `forgets` int(11) DEFAULT '0',
   `memory_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_brochure_id_idx` (`brochure_id`),
-  CONSTRAINT `fk_brochure_id` FOREIGN KEY (`brochure_id`) REFERENCES `brochure` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `fk_card_brochure_id_idx` (`brochure_id`),
+  CONSTRAINT `fk_card_brochure_id` FOREIGN KEY (`brochure_id`) REFERENCES `brochure` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `card`
+--
+
+LOCK TABLES `card` WRITE;
+/*!40000 ALTER TABLE `card` DISABLE KEYS */;
+INSERT INTO `card` VALUES (1,1,'key','value',NULL,NULL,NULL),(2,1,'key','value',1,1,NULL),(3,1,'key','value',0,0,NULL),(4,1,'key','value',0,0,NULL);
+/*!40000 ALTER TABLE `card` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -62,4 +82,4 @@ CREATE TABLE `card` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-14 18:52:23
+-- Dump completed on 2019-06-16 21:25:45

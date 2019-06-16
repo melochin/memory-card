@@ -20,17 +20,20 @@ public class ApiBrochureController {
 
 	@PostMapping("/api/brochures")
 	public Brochure save(@RequestBody Brochure brochure) {
-		return brochureRepository.save(brochure);
+		brochureRepository.save(brochure);
+		return brochureRepository.find(brochure.getId());
 	}
 
 	@PutMapping("/api/brochures")
 	public Brochure modify(@RequestBody Brochure brochure) {
-		return brochureRepository.modify(brochure);
+		brochureRepository.modify(brochure);
+		return brochureRepository.find(brochure.getId());
 	}
 
 	@DeleteMapping("/api/brochures/{brochureId}")
-	public Brochure delete(@PathVariable("brochureId") String brochureId) {
-		return brochureRepository.delete(brochureId);
+	public Brochure delete(@PathVariable("brochureId") Long brochureId) {
+		brochureRepository.delete(brochureId);
+		return null;
 	}
 
 }

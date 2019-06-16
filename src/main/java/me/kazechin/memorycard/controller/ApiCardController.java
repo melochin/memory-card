@@ -17,13 +17,13 @@ public class ApiCardController {
 	private ICardRepository cardRepository;
 
 	@PostMapping("/api/brochures/{brochureId}/cards")
-	public void save(@PathVariable("brochureId") String brochureId, @RequestBody Card card) {
+	public void save(@PathVariable("brochureId") long brochureId, @RequestBody Card card) {
 		cardRepository.save(brochureId, card);
 		return;
 	}
 
 	@PostMapping("/api/brochures/{brochureId}/cards/list")
-	public void saveList(@PathVariable("brochureId") String brochureId, @RequestBody Card[] cards) {
+	public void saveList(@PathVariable("brochureId") long brochureId, @RequestBody Card[] cards) {
 		for(Card card : cards) {
 			cardRepository.save(brochureId, card);
 		}
@@ -58,12 +58,12 @@ public class ApiCardController {
 
 	@PutMapping("/api/brochures/{brochureId}/cards/memory/rember")
 	public void memoryRember(@PathVariable("brochureId") String brochureId, @RequestBody Card card) {
-		cardRepository.memoryRember(brochureId, card.getId());
+		cardRepository.memoryRemember(card.getId());
 	}
 
 	@PutMapping("/api/brochures/{brochureId}/cards/memory/forget")
 	public void memoryForget(@PathVariable("brochureId") String brochureId, @RequestBody Card card) {
-		cardRepository.memoryForget(brochureId, card.getId());
+		cardRepository.memoryForget(card.getId());
 	}
 
 	@PutMapping("/api/brochures/{brochureId}/cards/swap/{firstId}/{secondId}")

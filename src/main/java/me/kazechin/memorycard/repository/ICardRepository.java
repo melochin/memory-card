@@ -2,14 +2,15 @@ package me.kazechin.memorycard.repository;
 
 import me.kazechin.memorycard.model.Card;
 import me.kazechin.memorycard.model.MemoryCardInfo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface ICardRepository {
+
+	@Select("select * from card")
+	List<Card> listAll();
 
 	@Select("select * from card where brochure_id = #{brochureId}")
 	List<Card> list(@Param("brochureId") String brochureId);
@@ -18,22 +19,32 @@ public interface ICardRepository {
 
 	List<Card> listMemory(String brochureId);
 
+	@Select("select * from card where id = #{cardId}")
 	Card find(String cardId);
 
-	MemoryCardInfo findMemoryCardInfo(String brochureId, String cardId);
+	@Update("update card set remembers = remembers + 1 where id = #{cardId}")
+	void memoryRemember(@Param("cardId") Long cardId);
 
-	void memoryRember(String brochureId, String cardId);
+	@Update("update card set forgets = forgets + 1 where id = #{cardId}")
+	void memoryForget(@Param("cardId") Long cardId);
 
-	void memoryForget(String brochureId, String cardId);
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	@Insert("insert into card (brochure_id, front, back) " +
+				"values (#{brochureId}, #{card.front}, #{card.back})")
+	int save(@Param("brochureId") long brochureId, @Param("card") Card card);
 
-	void save(String brochureId, Card card);
-
+	@Update("update card set key = #{card.key}, value = #{card.value) where id = #{card.id}")
 	void modify(String brochureId, Card card);
 
+	@Delete("delete card where brochure_id = #{brochureId} and id = #{card.id}")
 	void delete(String brochureId, Card card);
 
+	@Deprecated
 	void swap(String brochureId, String firstCardId, String secondCardId);
 
+	@Deprecated
 	void swapBefore(String brochureId, String firstCardId, String secondCardId);
 
+	@Deprecated
+	MemoryCardInfo findMemoryCardInfo(String brochureId, Long cardId);
 }

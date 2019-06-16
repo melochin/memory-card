@@ -7,44 +7,38 @@ public class Card implements Serializable {
 
 	private final static long serialVersionUID = -7305157881878994897L;
 
-	private String id;
+	private Long id;
 
-	private String key;
+	private String front;
 
-	private String value;
+	private String back;
 
-	public Card(){
-		this.id = UUID.randomUUID().toString();
-	}
+	public Card(){ }
 
-	public Card(String key, String value) {
+	public Card(String front, String back) {
 		this();
-		this.key = key;
-		this.value = value;
+		this.front = front;
+		this.back = back;
 	}
 
-	public void generateId() {
-		this.id = UUID.randomUUID().toString();
-	}
-
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public String getKey() {
-		return key;
+	public String getFront() {
+		return front;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setFront(String front) {
+		this.front = front;
 	}
 
-	public String getValue() {
-		return value;
+	public String getBack() {
+		return back;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setBack(String back) {
+		this.back = back;
 	}
 
 

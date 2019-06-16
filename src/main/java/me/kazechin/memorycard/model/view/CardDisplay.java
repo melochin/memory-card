@@ -24,24 +24,24 @@ public class CardDisplay {
 		this.cardInfo = cardInfo;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return card.getId();
 	}
 
 	public String getKey() {
-		return card.getKey();
+		return card.getFront();
 	}
 
 	public void setKey(String key) {
-		card.setKey(key);
+		card.setFront(key);
 	}
 
 	public String getValue() {
-		return card.getValue();
+		return card.getBack();
 	}
 
 	public void setValue(String value) {
-		card.setValue(value);
+		card.setBack(value);
 	}
 
 	public Integer getRemeber() {

@@ -18,6 +18,11 @@ public class ApiBrochureController {
 		return brochureRepository.list();
 	}
 
+	@GetMapping("/api/brochures/{brochureId}")
+	public Brochure get(@PathVariable("brochureId") Long brochureId) {
+		return brochureRepository.find(brochureId);
+	}
+
 	@PostMapping("/api/brochures")
 	public Brochure save(@RequestBody Brochure brochure) {
 		brochureRepository.save(brochure);

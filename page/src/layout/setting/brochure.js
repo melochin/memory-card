@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import { Layout, Row, Col } from 'antd';
-import { Form, Input, Button, Icon } from 'antd';
-import { List } from 'antd';
-import MySider from './sider.js';
-import {axios} from '../setting';
-
-const {Header, Content, Sider} = Layout
-
+import { Layout } from 'antd';
+import { Form, Input, Button } from 'antd';
+import { message } from 'antd';
+import { axios} from '../setting';
 
 class Brochure extends Component {
 
@@ -23,6 +19,22 @@ class Brochure extends Component {
     axios.get(`/api/brochures/${brochureId}`)
       .then(response => {
         this.setState({brochure: response.data});
+      });
+  };
+
+  handleSave = () => {
+      const {brochureId} = this.props;
+      this.props.form.validateFieldsAndScroll((err, values) => {
+          if (!err) {
+              values['id'] = brochureId;
+              console.log('Received values of form: ', values);
+              axios.put('/api/brochures', values)
+              .then(response => {
+                  // TODO 没有更新表单的目前值
+                  this.setState({brochure: response.data});
+                  message.success('更新成功', 1);
+              })
+          }
       });
   };
 
@@ -48,92 +60,13 @@ class Brochure extends Component {
           }
         </Form.Item>
         <Form.Item>
-          <Button type="primary">保存</Button>
+          <Button type="primary" onClick={this.handleSave}>保存</Button>
         </Form.Item>
       </Form>
     )
   }
 }
 
-class Card extends Component {
-
-  state = {
-    cards : new Array()
-  };
-
-  componentDidMount = () => {
-    const {brochureId} = this.props;
-    axios.get(`/api/brochures/${brochureId}/cards`)
-      .then(response => {
-        this.setState({cards: response.data});
-      });
-  };
-
-  render = () => {
-
-    const lists = this.state.cards.map(o =>
-      <List.Item actions={[<a>编辑</a>]} key={o.id}>
-        <Row style={{width: '100%'}}>
-          <Col span={9}>
-            {o.front}
-          </Col>
-          <Col span={9}>
-            {o.back}
-          </Col>
-        </Row>
-      </List.Item>
-    );
-
-
-    return (
-      <div>
-        <Button.Group>
-          <Button icon="plus-square">新增</Button>
-          <Button icon="file-add">批量导入</Button>
-        </Button.Group>
-      <List >
-        {lists}
-      </List>
-      </div>
-    )
-  }
-}
-
 const BrochureForm = Form.create()(Brochure);
 
-class Setting extends Component {
-
-  state = {
-    component : null
-  }
-
-  onClick = (e) => {
-    const {brochureId} = this.props.match.params;
-    if (e.key == '1') {
-      this.setState({component: <BrochureForm brochureId={brochureId}/>})
-    } else {
-      this.setState({component: <Card brochureId={brochureId}/>})
-    }
-  };
-
-  render = () => {
-    const {brochureId} = this.props.match.params;
-    var {component} = this.state;
-    if (component == null) {
-      component = (<BrochureForm brochureId={brochureId}/>);
-    }
-
-    return (
-      <Layout>
-          <Sider style={{ background: '#fff' }}>
-            <MySider handleClick={this.onClick}/>
-          </Sider>
-        <Content style={{ padding: '0 24px', minHeight: 280, textAlign: 'left'}}>
-          {component}
-        </Content>
-      </Layout>
-    )
-  }
-}
-
-export default Setting;
+export default BrochureForm;

@@ -19,7 +19,8 @@ public interface IBrochureRepository {
 	void save(@Param("brochure") Brochure brochure);
 
 	@Update("update brochure " +
-			"set name=#{brochure.name}, description=#{brochure.description}")
+			"set name=#{brochure.name}, description=#{brochure.description} " +
+			"where id=#{brochure.id}")
 	void modify(@Param("brochure") Brochure brochure);
 
 	@Delete("delete from brochure where id=#{brochureId}")

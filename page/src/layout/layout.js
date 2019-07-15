@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, IndexRoute } from 'react-router-dom'
 import Brochures from './brochure/brochures';
 import CardLayout from './card/card';
-import Setting from './setting/brochure';
+import Setting from './setting/main';
 const containerId = "container";
 import { Layout, Button, Row, Col, Form, Icon, Input, Checkbox, Modal } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;

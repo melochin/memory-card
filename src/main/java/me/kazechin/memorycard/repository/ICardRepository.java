@@ -28,7 +28,7 @@ public interface ICardRepository {
 	@Update("update card set forgets = forgets + 1 where id = #{cardId}")
 	void memoryForget(@Param("cardId") Long cardId);
 
-	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	@Options(useGeneratedKeys = true, keyColumn = "id")
 	@Insert("insert into card (brochure_id, front, back) " +
 				"values (#{brochureId}, #{card.front}, #{card.back})")
 	int save(@Param("brochureId") long brochureId, @Param("card") Card card);
@@ -36,8 +36,8 @@ public interface ICardRepository {
 	@Update("update card set key = #{card.key}, value = #{card.value) where id = #{card.id}")
 	void modify(String brochureId, Card card);
 
-	@Delete("delete card where brochure_id = #{brochureId} and id = #{card.id}")
-	void delete(String brochureId, Card card);
+	@Delete("delete from card where brochure_id = #{brochureId} and id = #{cardId}")
+	void delete(@Param("brochureId") long brochureId, @Param("cardId") long cardId);
 
 	@Deprecated
 	void swap(String brochureId, String firstCardId, String secondCardId);

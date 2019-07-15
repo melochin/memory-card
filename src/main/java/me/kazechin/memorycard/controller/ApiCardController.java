@@ -1,14 +1,11 @@
 package me.kazechin.memorycard.controller;
 
 import me.kazechin.memorycard.model.Card;
-import me.kazechin.memorycard.model.view.CardDisplay;
-import me.kazechin.memorycard.model.MemoryCardInfo;
 import me.kazechin.memorycard.repository.ICardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class ApiCardController {
@@ -30,25 +27,37 @@ public class ApiCardController {
 		return;
 	}
 
-	@GetMapping(value="/api/brochures/{brochureId}/cards")
-	public List<CardDisplay> list(@PathVariable("brochureId") String brochureId) {
-		return cardRepository.list(brochureId).stream()
-				.map(card -> this.wrapCardDisplay(brochureId, card))
-				.collect(Collectors.toList());
+	@GetMapping("/api/brochures/{brochureId}/cards")
+	public List<Card> list(@PathVariable("brochureId") String brochureId) {
+		return cardRepository.list(brochureId);
 	}
 
-	@GetMapping(value="/api/cards/{word}")
-	public List<CardDisplay> listByWord(@PathVariable("word") String word) {
-		return cardRepository.listByWord(word).stream()
-				.map(card -> new CardDisplay(card))
-				.collect(Collectors.toList());
+	@DeleteMapping("/api/brochures/{brochureId}/cards/{cardId}")
+	public void remove(@PathVariable("brochureId") long brochureId,
+					   @PathVariable("cardId") long cardId) {
+		cardRepository.delete(brochureId, cardId);
 	}
 
-	private CardDisplay wrapCardDisplay(String brochureId, Card card) {
-		MemoryCardInfo memoryCardInfo = cardRepository.findMemoryCardInfo(brochureId, card.getId());
-		if(memoryCardInfo == null) memoryCardInfo = new MemoryCardInfo();
-		return new CardDisplay(card, memoryCardInfo);
-	};
+
+//	@GetMapping(value="/api/brochures/{brochureId}/cards")
+//	public List<CardDisplay> list(@PathVariable("brochureId") String brochureId) {
+//		return cardRepository.list(brochureId).stream()
+//				.map(card -> this.wrapCardDisplay(brochureId, card))
+//				.collect(Collectors.toList());
+//	}
+//
+//	@GetMapping(value="/api/cards/{word}")
+//	public List<CardDisplay> listByWord(@PathVariable("word") String word) {
+//		return cardRepository.listByWord(word).stream()
+//				.map(card -> new CardDisplay(card))
+//				.collect(Collectors.toList());
+//	}
+//
+//	private CardDisplay wrapCardDisplay(String brochureId, Card card) {
+//		MemoryCardInfo memoryCardInfo = cardRepository.findMemoryCardInfo(brochureId, card.getId());
+//		if(memoryCardInfo == null) memoryCardInfo = new MemoryCardInfo();
+//		return new CardDisplay(card, memoryCardInfo);
+//	};
 
 
 	@GetMapping(value="/api/brochures/{brochureId}/cards/memory")
@@ -80,11 +89,11 @@ public class ApiCardController {
 		cardRepository.swapBefore(brochureId, firstId, secondId);
 	}
 
-	@DeleteMapping("/api/brochures/{brochureId}/cards")
-	public void delete(@PathVariable("brochureId") String brochureId,
-							@RequestBody Card card) {
-		cardRepository.delete(brochureId, card);
-		return;
-	}
+//	@DeleteMapping("/api/brochures/{brochureId}/cards")
+//	public void delete(@PathVariable("brochureId") long brochureId,
+//							@RequestBody Card card) {
+//		cardRepository.delete(brochureId, card);
+//		return;
+//	}
 
 }
